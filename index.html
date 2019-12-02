@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		#details{
+			width: 100%;
+			margin: 30px auto;
+		}
+		.table{
+			line-height: 1.5;
+		}
+		td{
+			padding: 5px;
+		}
+		.thead{
+			font-weight: bold;
+		}
+		.btn{
+			background: black;
+			padding: 10px 15px;
+			color:white;
+			border:none;
+		}
+	</style>
+	</head>		
+<body>
+
+<center>
+<button type="button" class="btn" onclick="getJson()">Get Details</button>
+
+<div id="details"></div>
+</center>
+
+
+<script type="text/javascript">
+function getJson(){
+	var html = "";
+    // 1. Create a new XMLHttpRequest object
+	var xhr = new XMLHttpRequest();
+    // 2. Configure it: GET-request for the URL details.json
+	xhr.open('GET', 'details.json');
+    // 3. Send the request over the network
+    xhr.send();
+    // 4. This will be called after the response is received
+	xhr.onload = function() {
+	    if (xhr.status === 200) {	// analyze HTTP status of the response
+	    	html += "<table class='table' border='1'>";
+	    	html += "<tr>";
+	    	html += "<td class='thead'>Name</td>";
+	    	html += "<td class='thead'>Degree</td>";
+	    	html += "<td class='thead'>Comapany</td>";
+	    	html += "<td class='thead'>Job Title</td>";
+	    	html += "<td class='thead'>Department</td>";
+	    	html += "<td class='thead'>Year conferred</td>";
+	    	html += "</tr>";
+	        var result = JSON.parse(xhr.responseText); // responseText is the JSON data returned
+	        for(var i = 0; i < result.length; i++){
+	        	 html += "<tr>"; 
+	 		var json_data = result[i];
+
+	 		var res = [];
+
+			for(var j in json_data){
+			    res.push([j, json_data [j]]);
+			    html += "<td>"+json_data [j]+"</td>"; 
+			}
+			 html += "</tr>"; 
+			}
+			html += "</table>";
+	    }
+	    else {
+	        // if some error
+	        alert('Request failed.  Returned status of ' + xhr.status);
+	    }
+
+	    //append the generated html inside the table
+	   document.getElementById("details").innerHTML = html;  
+
+	};
+
+}
+
+</script>
+
+</body>
+</html>
